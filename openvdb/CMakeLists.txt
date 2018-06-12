@@ -229,8 +229,8 @@ TARGET_LINK_LIBRARIES ( vdb_print
   openvdb_shared
   ${CMAKE_THREAD_LIBS_INIT}
   ${BLOSC_blosc_LIBRARY}
-  m
-  stdc++
+  # m
+  # stdc++
   )
 
 SET ( VDB_RENDER_SOURCE_FILES cmd/openvdb_render/main.cc )
@@ -249,8 +249,8 @@ TARGET_LINK_LIBRARIES ( vdb_render
   ${Openexr_ILMIMF_LIBRARY}
   ${Ilmbase_ILMTHREAD_LIBRARY}
   ${Ilmbase_IEX_LIBRARY}
-  m
-  stdc++
+  # m
+  # stdc++
   )
 
 SET ( VDB_VIEW_SOURCE_FILES
@@ -265,28 +265,28 @@ SET_SOURCE_FILES_PROPERTIES ( ${VDB_VIEW_SOURCE_FILES}
   PROPERTIES
   COMPILE_FLAGS "-DOPENVDB_USE_BLOSC ${OPENVDB_USE_GLFW_FLAG} -DGL_GLEXT_PROTOTYPES=1"
   )
-IF (NOT WIN32)
-  ADD_EXECUTABLE ( vdb_view
-    ${VDB_VIEW_SOURCE_FILES}
-    )
-  
-  target_include_directories ( vdb_view SYSTEM PRIVATE ${Boost_INCLUDE_DIR} )
 
-  TARGET_LINK_LIBRARIES ( vdb_view
-    openvdb_shared
-    ${Boost_THREAD_LIBRARY}
-    ${OPENGL_gl_LIBRARY}
-    ${OPENGL_glu_LIBRARY}
-    ${COCOA_LIBRARY}
-    ${IOKIT_LIBRARY}
-    ${COREVIDEO_LIBRARY}
-    ${GLFW_LINK_LIBRARY}
-    ${GLFW_DEPENDENT_LIBRARIES}
-    ${GLEW_GLEW_LIBRARY}
-    m
-    stdc++
-    )
-ENDIF ()
+ADD_EXECUTABLE ( vdb_view
+  ${VDB_VIEW_SOURCE_FILES}
+)
+  
+target_include_directories ( vdb_view SYSTEM PRIVATE ${Boost_INCLUDE_DIR} )
+
+TARGET_LINK_LIBRARIES ( vdb_view
+	openvdb_shared
+	${Boost_THREAD_LIBRARY}
+	${OPENGL_gl_LIBRARY}
+	${OPENGL_glu_LIBRARY}
+	${COCOA_LIBRARY}
+	${IOKIT_LIBRARY}
+	${COREVIDEO_LIBRARY}
+	${GLFW_LINK_LIBRARY}
+	${GLFW_DEPENDENT_LIBRARIES}
+	${GLEW_GLEW_LIBRARY}
+    ${GLFW3_LIBRARIES}
+    # m
+    # stdc++
+)
 
 SET ( UNITTEST_SOURCE_FILES
   unittest/main.cc
@@ -392,8 +392,8 @@ IF ( OPENVDB_BUILD_UNITTESTS )
   TARGET_LINK_LIBRARIES ( vdb_test
     ${CPPUnit_cppunit_LIBRARY}
     openvdb_shared
-    m
-    stdc++
+    # m
+    # stdc++
     )
 
   ADD_TEST ( vdb_unit_test vdb_test )
@@ -419,13 +419,11 @@ IF (OPENVDB_BUILD_DOCS)
 ENDIF ()
 
 # Installation
-IF ( NOT WIN32 )
-  INSTALL ( TARGETS
+INSTALL ( TARGETS
     vdb_view
     DESTINATION
     bin
-    )
-ENDIF ()
+)
 INSTALL ( TARGETS
   vdb_print
   vdb_render

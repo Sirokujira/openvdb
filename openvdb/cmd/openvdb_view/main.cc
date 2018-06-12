@@ -39,6 +39,7 @@
 #include <string>
 #include <vector>
 
+#include <windows.h>
 
 inline void
 usage [[noreturn]] (const char* progName, int status)
@@ -179,6 +180,8 @@ main(int argc, char *argv[])
                 }
             }
         }
+
+		// DebugBreak();
 
         viewer.open();
         viewer.view(allGrids);

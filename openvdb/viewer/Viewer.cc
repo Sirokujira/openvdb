@@ -52,13 +52,13 @@
 #include <boost/thread/thread.hpp>
 
 #ifdef OPENVDB_USE_GLFW_3
-//#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #else // if !defined(OPENVDB_USE_GLFW_3)
 #if defined(__APPLE__) || defined(MACOSX)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #else
+#include <windows.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
@@ -705,7 +705,6 @@ ViewerImpl::view(const openvdb::GridCPtrVec& gridList)
     // construct render modules
     showNthGrid(/*n=*/0);
 
-
     // main loop
 
     size_t frame = 0;
@@ -826,12 +825,22 @@ ViewerImpl::render()
 
         // Indicate via their hotkeys which render modules are enabled.
         std::string keys = "123";
-        for (auto n: {0, 1, 2}) { if (!mRenderModules[n]->visible()) keys[n] = ' '; }
-        BitmapFont13::print(width - 10 - 30, 10, keys);
-        glColor3d(0.75, 0.75, 0.75);
-        BitmapFont13::print(width - 10 - 30, 10, "123");
+		if (mRenderModules.size() == 0)
+		{
+		}
+		else
+		{
+			for (auto n : { 0, 1, 2 })
+			{
+				if (!mRenderModules[n]->visible()) keys[n] = ' ';
+			}
 
-        BitmapFont13::disableFontRendering();
+			BitmapFont13::print(width - 10 - 30, 10, keys);
+			glColor3d(0.75, 0.75, 0.75);
+			BitmapFont13::print(width - 10 - 30, 10, "123");
+
+			BitmapFont13::disableFontRendering();
+		}
     }
 }
 
