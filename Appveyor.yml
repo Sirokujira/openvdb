@@ -48,6 +48,10 @@ environment:
     VCPKG_x64_SHARED_ROOT: C:/tools/vcpkg/installed/x64-windows
     CONFIGURATION: Release
 
+init:
+  - cmd: echo "init"
+install:
+  - cmd: echo "install"
 
 before_build:
   - cmd: cd C:\tools\vcpkg
