@@ -52,47 +52,72 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS ( GLFW3
 IF (GLFW3_FOUND)
   SET( GLFW3_INCLUDE_DIR "${GLFW3_LOCATION}/include" CACHE STRING "GLFW3 include path")
   IF (GLFW3_USE_STATIC_LIBS)
-    FIND_LIBRARY ( GLFW3_glfw_LIBRARY  glfw3  ${GLFW3_LOCATION}/lib
-	  NO_DEFAULT_PATH
-	  NO_CMAKE_ENVIRONMENT_PATH
-	  NO_CMAKE_PATH
-	  NO_SYSTEM_ENVIRONMENT_PATH
-	  NO_CMAKE_SYSTEM_PATH
-	  )
-  ELSE (GLFW3_USE_STATIC_LIBS)
+    IF (APPLE)
+      FIND_LIBRARY ( GLFW3_glfw_LIBRARY  glfw3  ${GLFW3_LOCATION}/lib
+        NO_DEFAULT_PATH
+        NO_CMAKE_ENVIRONMENT_PATH
+        NO_CMAKE_PATH
+        NO_SYSTEM_ENVIRONMENT_PATH
+        NO_CMAKE_SYSTEM_PATH
+      )
+    ELSEIF (WIN32)
+      IF (MSVC11)
+        SET (GLFW3_VC_DIR 2012)
+      ELSEIF (MSVC12)
+        SET (GLFW3_VC_DIR 2013)
+      ELSEIF (MSVC14)
+        # SET (GLFW3_VC_DIR 2017)
+        SET (GLFW3_VC_DIR 2015)
+      ENDIF (MSVC11)
+      # MESSAGE ("GLFW3_VC_DIR = ${GLFW3_VC_DIR}")
+      SET (GLFW3_PATH_SUFFIXES lib-${GLFW3_VC_DIR} )
+      FIND_LIBRARY ( GLFW3_glfw_LIBRARY NAMES glfw3 PATHS ${GLFW3_LOCATION} PATH_SUFFIXES ${GLFW3_PATH_SUFFIXES})
+    # ELSEIF (MinGW)
+    ELSE
+      # Linux?
+      FIND_LIBRARY ( GLFW3_glfw_LIBRARY  glfw3  ${GLFW3_LOCATION}/lib
+        NO_DEFAULT_PATH
+        NO_CMAKE_ENVIRONMENT_PATH
+        NO_CMAKE_PATH
+        NO_SYSTEM_ENVIRONMENT_PATH
+        NO_CMAKE_SYSTEM_PATH
+      )
+    ENDIF ()
+
+  ELSE (NOT GLFW3_USE_STATIC_LIBS)
     FIND_LIBRARY ( GLFW3_glfw_LIBRARY  glfw  ${GLFW3_LOCATION}/lib
-	  NO_DEFAULT_PATH
-	  NO_CMAKE_ENVIRONMENT_PATH
-	  NO_CMAKE_PATH
-	  NO_SYSTEM_ENVIRONMENT_PATH
-	  NO_CMAKE_SYSTEM_PATH
-	  )
+      NO_DEFAULT_PATH
+      NO_CMAKE_ENVIRONMENT_PATH
+      NO_CMAKE_PATH
+      NO_SYSTEM_ENVIRONMENT_PATH
+      NO_CMAKE_SYSTEM_PATH
+      )
   ENDIF (GLFW3_USE_STATIC_LIBS)
 
   IF (APPLE)
-	FIND_LIBRARY ( COCOA_LIBRARY Cocoa )
-	FIND_LIBRARY ( IOKIT_LIBRARY IOKit )
-	FIND_LIBRARY ( COREVIDEO_LIBRARY CoreVideo )
+    FIND_LIBRARY ( COCOA_LIBRARY Cocoa )
+    FIND_LIBRARY ( IOKIT_LIBRARY IOKit )
+    FIND_LIBRARY ( COREVIDEO_LIBRARY CoreVideo )
   ELSEIF (UNIX AND NOT APPLE)
-	SET ( GLFW3_REQUIRED_X11_LIBRARIES
+    SET ( GLFW3_REQUIRED_X11_LIBRARIES
       Xi
       Xrandr
       Xinerama
       Xcursor
       )
   ENDIF ()
-  
+
   SET ( GLFW3_LIBRARIES
-	${OPENGL_gl_LIBRARY}
-	${OPENGL_glu_LIBRARY}
-	${GLFW3_glfw_LIBRARY}
-	# UNIX                                                                                                                      
-	${GLFW3_REQUIRED_X11_LIBRARIES}
-	# APPLE                                                                                                                     
-	${COCOA_LIBRARY}
-	${IOKIT_LIBRARY}
-	${COREVIDEO_LIBRARY}
-	CACHE STRING "GLFW3 required libraries"
-	)
+    ${OPENGL_gl_LIBRARY}
+    ${OPENGL_glu_LIBRARY}
+    ${GLFW3_glfw_LIBRARY}
+    # UNIX                                                                                                                      
+    ${GLFW3_REQUIRED_X11_LIBRARIES}
+    # APPLE                                                                                                                     
+    ${COCOA_LIBRARY}
+    ${IOKIT_LIBRARY}
+    ${COREVIDEO_LIBRARY}
+    CACHE STRING "GLFW3 required libraries"
+    )
   
 ENDIF ()
