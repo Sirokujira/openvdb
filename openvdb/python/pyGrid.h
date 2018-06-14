@@ -92,6 +92,9 @@ using namespace openvdb::OPENVDB_VERSION_NAME;
 #pragma clang diagnostic pop
 #endif
 
+// windows min/mac macro off
+#undef min
+#undef max
 
 namespace pyopenvdb {
 
@@ -1792,8 +1795,8 @@ public:
     ValueT getValue() const { return *mIter; }
     bool getActive() const { return mIter.isValueOn(); }
     Index getDepth() const { return mIter.getDepth(); }
-    Coord getBBoxMin() const { return mIter.getBoundingBox().min(); }
-    Coord getBBoxMax() const { return mIter.getBoundingBox().max(); }
+	Coord getBBoxMin() const { return mIter.getBoundingBox().min(); }
+	Coord getBBoxMax() const { return mIter.getBoundingBox().max(); }
     Index64 getVoxelCount() const { return mIter.getVoxelCount(); }
 
     void setValue(const ValueT& val) { SetterT::setValue(mIter, val); }
