@@ -59,23 +59,23 @@ install:
   - cmd: echo "install"
 
 before_build:
+  # openexr
+  - cmd: git clone https://github.com/openexr/openexr
+  - cmd: cd openexr
+  - cmd: mkdir build && cd build
+  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -BUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
+  - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
+  - cmd: cd ..
+  - cmd: mkdir build2 & cd build2
+  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DILMBASE_PACKAGE_PREFIX="..\build" -BUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
+  - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
+  - cmd: cd ..
+
   - cmd: cd C:\tools\vcpkg
   # - cmd: vcpkg install glew glfw3 zlib blosc openexr tbb cppunit
   - cmd: vcpkg install glew glfw3 zlib blosc tbb cppunit
   - cmd: vcpkg integrate install
   - cmd: set CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%VCPKG_x64_SHARED_ROOT%
-
-  # openexr
-  - cmd: git clone https://github.com/openexr/openexr
-  - cmd: cd openexr
-  - cmd: mkdir build && cd build
-  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DCMAKE_CONFIGURATION_TYPES=%CONFIGURATION%
-  - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
-  - cmd: cd ..
-  - cmd: mkdir build2 & cd build2
-  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DILMBASE_PACKAGE_PREFIX="..\build"
-  - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
-  - cmd: cd ..
 
   - cmd: set BOOST_ROOT=C:\Libraries\boost_1_67_0
   - cmd: set CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%;%BOOST_ROOT%
