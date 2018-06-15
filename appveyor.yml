@@ -69,11 +69,11 @@ before_build:
   - cmd: git clone https://github.com/openexr/openexr
   - cmd: cd openexr
   - cmd: mkdir build && cd build
-  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="C:\openexr\build" -DCMAKE_CONFIGURATION_TYPES=%CONFIGURATION%
+  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DCMAKE_CONFIGURATION_TYPES=%CONFIGURATION%
   - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
   - cmd: cd ..
   - cmd: mkdir build2 & cd build2
-  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="C:\openexr\build2" -DILMBASE_PACKAGE_PREFIX="E:\openexr\build"
+  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DILMBASE_PACKAGE_PREFIX="..\build"
   - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
   - cmd: cd ..
 
