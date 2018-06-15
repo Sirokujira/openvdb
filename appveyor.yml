@@ -63,11 +63,11 @@ before_build:
   - cmd: git clone https://github.com/openexr/openexr
   - cmd: cd openexr
   - cmd: mkdir build && cd build
-  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -BUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
+  - cmd: cmake ..\IlmBase -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
   - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
   - cmd: cd ..
   - cmd: mkdir build2 & cd build2
-  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DILMBASE_PACKAGE_PREFIX="..\build" -BUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
+  - cmd: cmake ..\OpenEXR -G"%CMAKE_GENERATOR%" -DCMAKE_INSTALL_PREFIX="." -DILMBASE_PACKAGE_PREFIX="..\build" -DBUILD_SHARED_LIBS:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=ON
   - cmd: cmake --build . --config %CONFIGURATION% --target INSTALL
   - cmd: cd ..
 
