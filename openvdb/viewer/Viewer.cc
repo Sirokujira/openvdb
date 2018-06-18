@@ -674,6 +674,11 @@ ViewerImpl::view(const openvdb::GridCPtrVec& gridList)
 #if GLFW_VERSION_MAJOR >= 3
     // Prepare window for rendering.
     glfwMakeContextCurrent(mWindow);
+	// Windows only?
+	// https://stackoverflow.com/questions/12329082/glcreateshader-is-crashing
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+	// if (glewInit() != GLEW_OK)
+	//	throw std::runtime_error("glewInit failed");
 #endif
 
     {
@@ -1039,7 +1044,7 @@ ViewerImpl::showNthGrid(size_t n)
     mRenderModules.clear();
     mRenderModules.push_back(RenderModulePtr(new TreeTopologyModule(mGrids[n])));
     mRenderModules.push_back(RenderModulePtr(new MeshModule(mGrids[n])));
-    mRenderModules.push_back(RenderModulePtr(new VoxelModule(mGrids[n])));
+	mRenderModules.push_back(RenderModulePtr(new VoxelModule(mGrids[n])));
 
     if (active.empty()) {
         for (size_t i = 1, I = mRenderModules.size(); i < I; ++i) {
